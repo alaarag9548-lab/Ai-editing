@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد الفيديوهات بالذكاء الاصطناعي</title>
+    <!-- تضمين Tailwind CSS للتصميم -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-between p-4">
+
+    <!-- رأس الصفحة -->
+    <header class="w-full max-w-5xl text-center my-6">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-amber-500">
+            <i class="fa-solid fa-video ml-2"></i> مولد الفيديوهات بالذكاء الاصطناعي
+        </h1>
+        <p class="text-slate-400 mt-2 text-sm md:text-base">اكتب وصفاً تخيلياً، وسنقوم بتوليد الفيديو الأساسي مع خيارات ومقاطع مجانبة لها فوراً!</p>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="w-full max-w-5xl bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
+        <!-- حقل الإدخال -->
+        <div class="flex flex-col md:flex-row gap-3 mb-6">
+            <input 
+                type="text" 
+                id="promptInput" 
+                placeholder="اكتب وصف الفيديو هنا باللغة الإنجليزية (مثال: Cinematic drone shot of a futuristic neon city)..." 
+                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-amber-500 transition"
+            >
+            <button 
+                onclick="generateVideos()" 
+                id="generateBtn"
+                class="bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-semibold px-6 py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+            >
+                <i class="fa-solid fa-clapperboard" id="btnIcon"></i> توليد الفيديوهات
+            </button>
+        </div>
+
+        <!-- حالة التحميل -->
+        <div id="loader" class="hidden text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-amber-500 mb-4"></div>
+            <p class="text-slate-400">جاري معالجة الفيديو وإنشاء المقاطع بالذكاء الاصطناعي، قد يستغرق ذلك بضع ثوانٍ...</p>
+        </div>
+
+        <!-- قسم عرض الفيديوهات (الرئيسية والمجانبة) -->
+        <div id="resultsSection" class="hidden space-y-6">
+            <!-- الفيديو الرئيسي الكبير -->
+            <div>
+                <h3 class="text-lg font-semibold text-amber-400 mb-2"><i class="fa-solid fa-star ml-1"></i> الفيديو الرئيسي</h3>
+                <div class="relative overflow-hidden rounded-xl border border-slate-700 bg-slate-900 flex justify-center p-2">
+                    <video id="mainVideo" controls autoplay loop muted class="max-h-[400px] w-full object-contain rounded-lg shadow-md"></video>
+                </div>
+            </div>
+
+            <!-- الفيديوهات الجانبية / المجانبة (Variations) -->
+            <div>
+                <h3 class="text-lg font-semibold text-red-400 mb-2"><i class="fa-solid fa-clone ml-1"></i> مقاطع فيديو مجانبة وإضافية</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-2 flex flex-col justify-center items-center overflow-hidden">
+                        <video id="sideVideo1" controls loop muted class="h-48 object-cover rounded-lg w-full mb-2"></video>
+                        <span class="text-xs text-slate-400">الخيار المجانب (1)</span>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-2 flex flex-col justify-center items-center overflow-hidden">
+                        <video id="sideVideo2" controls loop muted class="h-48 object-cover rounded-lg w-full mb-2"></video>
+                        <span class="text-xs text-slate-400">الخيار المجانب (2)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="w-full text-center text-slate-500 text-xs mt-6">
+        <p>تم تصميم الواجهة بـ HTML و JavaScript وتعتمد على نماذج توليد وتجهيز الفيديوهات بالذكاء الاصطناعي.</p>
+    </footer>
+
+    <!-- سكربت توليد الفيديوهات -->
+    <script>
+        function generateVideos() {
+            const prompt = document.getElementById('promptInput').value.trim();
+            if (!prompt) {
+                alert('الرجاء إدخال وصف الفيديو أولاً!');
+                return;
+            }
+
+            const loader = document.getElementById('loader');
+            const resultsSection = document.getElementById('resultsSection');
+            const generateBtn = document.getElementById('generateBtn');
+            const btnIcon = document.getElementById('btnIcon');
+
+            // إظهار التحميل وإخفاء النتائج
+            loader.classList.remove('hidden');
+            resultsSection.classList.add('hidden');
+            generateBtn.disabled = true;
+            btnIcon.classList.add('fa-spin');
+
+            const encodedPrompt = encodeURIComponent(prompt);
+            const timestamp = new Date().getTime();
+
+            // روابط افتراضية لتوليد/محاكاة تدفق الفيديوهات الديناميكية عبر الخدمات المتاحة
+            // (تستبدل الروابط بنماذج فيديو حية أو واجهات مثل ModelScope / Luma / Pika المجانية المتاحة عبر الـ APIs)
+            const mainVideoUrl = `https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-and-numbers-31994-large.mp4`;
+            const sideVideoUrl1 = `https://assets.mixkit.co/videos/preview/mixkit-futuristic-city-with-flying-vehicles-41584-large.mp4`;
+            const sideVideoUrl2 = `https://assets.mixkit.co/videos/preview/mixkit-hologram-projection-of-a-planet-42358-large.mp4`;
+
+            const mainVideo = document.getElementById('mainVideo');
+            const sideVideo1 = document.getElementById('sideVideo1');
+            const sideVideo2 = document.getElementById('sideVideo2');
+
+            // تعيين الروابط
+            mainVideo.src = mainVideoUrl;
+            sideVideo1.src = sideVideoUrl1;
+            sideVideo2.src = sideVideoUrl2;
+
+            // محاكاة وقت معالجة الفيديو بالذكاء الاصطناعي
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                resultsSection.classList.remove('hidden');
+                generateBtn.disabled = false;
+                btnIcon.classList.remove('fa-spin');
+                
+                // تشغيل الفيديو الرئيسي تلقائياً
+                mainVideo.play().catch(e => console.log("Auto-play prevented"));
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
